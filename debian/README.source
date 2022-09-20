@@ -5,16 +5,24 @@ I'm maintaining the package using git-buildpackage, using [Upstream tarballs
 and linked upstream
 history](file:///usr/share/doc/git-buildpackage/manual-html/gbp.import.html#GBP.IMPORT.UPSTREAM.GIT.TARBALL>).
 
-To import a new upstream release:
+To import a new upstream release (e.g., 5.0.5):
 
-    $ git checkout upstream/latest
-    $ git merge VERSION
-    $ git tag upstream/VERSION
-    $ git checkout debian/sid
-    $ git merge upstream/latest
+    $ git fetch --tags https://github.com/wincent/command-t.git
+
+    $ uscan --report-status
+    $ gbp import-orig --uscan
+    or
+    $ debian/rules get-orig-source VERSION=5.0.5
+    $ gbp import-orig ../vim-command-t-5.0.5.tar.gz
+
+    $ gbp dch -N 5.0.5-1 debian/
+
     ... hack ...
-    $ gbp dch --release -N VERSION-1 debian/
-    $ BUILDER=pbuilder gbp buildpackage --git-tag --git-pbuilder
+    $ gbp buildpackage --git-ignore-new
+    ... did it work?
+
+    $ gbp dch --release debian
+    $ gbp buildpackage --git-tag
 
 A new upstream release can be imported with:
 
