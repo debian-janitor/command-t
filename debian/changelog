@@ -1,12 +1,17 @@
-vim-command-t (5.0.3-2) UNRELEASED; urgency=medium
+vim-command-t (5.0.5-1) UNRELEASED; urgency=medium
 
+  * New upstream release.
   * Switch vim vim-addon-manager to dh-vim-addon. (Closes: #1015940)
   * Specify debhelper compat level using new build-dependency method.
   * Remove debian/source/local-options: --unapply-patches has been the default
     behaviour for dpkg-source for long enough that git-buildpackage no longer
     mentions it.
+  * Add VERSION argument to get-orig-source rule
+  * debian/watch: use tags page and don't launch uupdate
+  * Drop remove-unnecessary-gems patch: uptream no longer requires them
+  * README.source: try to clean up instructiosn for using gbp import-orig
 
- -- Sam Morris <sam@robots.org.uk>  Tue, 20 Sep 2022 16:04:01 +0100
+ -- Sam Morris <sam@robots.org.uk>  Tue, 20 Sep 2022 18:00:47 +0100
 
 vim-command-t (5.0.3-1) unstable; urgency=medium
 
