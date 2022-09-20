@@ -25,12 +25,22 @@ override_dh_install:
 		| xargs -t -r -0 -I {} -- \
 			cp --parents {} debian/vim-command-t/usr/lib/vim-command-t
 
-get-orig-source: VERSION := $(shell dpkg-parsechangelog -S Version | perl -pe 's/(.*)-/$$1/')
+ifdef VERSION
+get-orig-source: GIT_REMOTE := https://github.com/wincent/command-t.git
 get-orig-source:
-	set -eu; \
+	@set -eu; \
+	    if ! git ls-remote --exit-code $(GIT_REMOTE) refs/tags/$(VERSION); then \
+	    	echo "Tag $(VERSION) not found in $(GIT_REMOTE)" >&2; \
+		exit 1; \
+	    fi;
 	    d=$(shell mktemp -d); \
 	    trap "rm -rf $$d" EXIT; \
 	    (cd "$$d"; git clone https://github.com/wincent/command-t.git); \
 	    (cd "$$d/command-t"; git archive --format=tar --prefix=command-t-$(VERSION)/ $(VERSION) > ../command-t-$(VERSION).tar); \
 	    xz -9 "$$d/command-t-$(VERSION).tar"; \
-	    mv "$$d/command-t-$(VERSION).tar.xz" .
+	    mv "$$d/command-t-$(VERSION).tar.xz" ..
+else
+get-orig-source:
+	@echo "Specify the upstream version by adding, e.g., VERSION=5.0.5 to make's command line" >&2
+	@exit 1
+endif
