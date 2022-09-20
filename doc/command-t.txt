@@ -324,8 +324,17 @@ Or, for very old versions of Ruby which don't define `RUBY_PATCHLEVEL`:
 
   :ruby puts RUBY_VERSION
 
-You can either set your version of Ruby to the output of the above command and
-then build Command-T, or re-build Vim with a version of Ruby you prefer.
+You can either set your version of Ruby to the output of the above
+command and then build Command-T, or re-build Vim with a version of Ruby
+you prefer.  Note that, if you installed Vim or MacVim via Homebrew, you
+should compile Command-T with the same Ruby binary that Homebrew installs
+as a dependency; using the same Ruby version and patch version may not
+be sufficient. In this case, use the following commands (adjusting the `cd`
+target to match the actual install location on your system):
+
+  cd ~/.vim/bundle/command-t/ruby/command-t/ext/command-t
+  /usr/local/opt/ruby/bin/ruby extconf.rb
+  make
 
 To set the version of Ruby, issue one of the following commands before
 the `make` command:
@@ -445,6 +454,13 @@ during the build:
   make clean
   ruby extconf.rb
   make
+
+If you are using the Dein plugin manager, you may run into a Ruby version
+mismatch even if the Command-T and Vim Ruby versions ostensibly match. This
+may be because Dein is running a cached version of the plugin. You can force
+it to run the current version using:
+
+  :call dein#recache_runtimepath()
 
 
 USAGE                                           *command-t-usage*
@@ -1157,7 +1173,7 @@ filetype of  `command-t`. This can be used in |ftplugins| or elsewhere to set up
 an |autocommand| or apply custom configuration.
 
 For example of an |ftplugin| that sets a custom 'statusline' for the
-Command-T match listing buffer, see: https://rfr.to/f
+Command-T match listing buffer, see: https://wincent.com/f
 
                                                 *command-t-load*
                                                 *commandt#Load*
@@ -1401,38 +1417,41 @@ Other contributors that have submitted patches include, in alphabetical order:
   Adrian Keet                     Nicolas Alpi
   Aleksandrs Ļedovskis            Nikolai Aleksandrovich Pavlov
   Alexey Terekhov                 Nilo César Teixeira
-  Andy Waite                      Noon Silk
-  Anthony Panozzo                 Ole Petter Bang
-  Artem Nezvigin                  Patrick Hayes
-  Ben Boeckel                     Paul Jolly
-  Daniel Burgess                  Pavel Sergeev
-  Daniel Hahler                   Rainux Luo
-  David Szotten                   Richard Feldman
-  Douglas Drumond                 Roland Puntaier
-  Emily Strickland                Ross Lagerwall
-  Felix Tjandrawibawa             Sam Morris
-  Gary Bernhardt                  Scott Bronson
-  Henric Trotzig                  Seth Fowler
-  Ivan Ukhov                      Sherzod Gapirov
-  Jakob Pfender                   Shlomi Fish
-  Jeff Kreeftmeijer               Stefan Schmidt
-  Jerome Castaneda                Stephen Gelman
-  Joe Lencioni                    Steven Moazami
-  KJ Tsanaktsidis                 Steven Stallion
-  Kevin Webster                   Sung Pae
-  Kien Nguyen Duc                 Thomas Pelletier
-  Lucas de Vries                  Ton van den Heuvel
-  Marcus Brito                    Victor Hugo Borja
-  Marian Schubert                 Vlad Seghete
-  Matthew Todd                    Vít Ondruch
-  Max Timkovich                   Woody Peterson
-  Mike Lundy                      Yan Pritzker
-  Nadav Samet                     Zak Johnson
+  Andrius Grabauskas              Noon Silk
+  Andy Waite                      Ole Petter Bang
+  Anthony Panozzo                 Patrick Hayes
+  Artem Nezvigin                  Paul Jolly
+  Ben Boeckel                     Pavel Sergeev
+  Brendan Mulholland              Rainux Luo
+  Daniel Burgess                  Richard Feldman
+  Daniel Hahler                   Roland Puntaier
+  David Emett                     Ross Lagerwall
+  David Szotten                   Sam Morris
+  Douglas Drumond                 Scott Bronson
+  Emily Strickland                Seth Fowler
+  Felix Tjandrawibawa             Sherzod Gapirov
+  Gary Bernhardt                  Shlomi Fish
+  Henric Trotzig                  Stefan Schmidt
+  Ivan Ukhov                      Stephen Gelman
+  Jakob Pfender                   Steve Herrell
+  Jeff Kreeftmeijer               Steven Moazami
+  Jerome Castaneda                Steven Stallion
+  Joe Lencioni                    Sung Pae
+  KJ Tsanaktsidis                 Thomas Pelletier
+  Kevin Webster                   Todd Derr
+  Kien Nguyen Duc                 Ton van den Heuvel
+  Lucas de Vries                  Victor Hugo Borja
+  Marcus Brito                    Vlad Seghete
+  Marian Schubert                 Vít Ondruch
+  Matthew Todd                    Woody Peterson
+  Max Timkovich                   Yan Pritzker
+  Mike Lundy                      Zak Johnson
+  Nadav Samet                     xiaodezhang
   Nate Kane
 
 This list produced with:
 
-    :read !git shortlog -s | grep -v 'Greg Hurrell' | cut -f 2-3 | column -c 72 | expand | sed -e 's/^/  /'
+    :read !git shortlog -s HEAD | grep -v 'Greg Hurrell' | cut -f 2-3 | column -c 72 | expand | sed -e 's/^/  /'
 
 Additionally, Hanson Wang, Jacek Wysocki and Yiding Jia wrote patches which
 were not directly included but which served as a model for changes that did
@@ -1474,14 +1493,14 @@ the project issue tracker etc).
 
 As many users choose to track Command-T using Pathogen or similar, which often
 means running a version later than the last official release, the intention is
-that the "master" branch should be kept in a stable and reliable state as much
+that the "main" branch should be kept in a stable and reliable state as much
 as possible.
 
-Riskier changes are first cooked on the "next" branch for a period before
-being merged into master. You can track this branch if you're feeling wild and
-experimental, but note that the "next" branch may periodically be rewound
-(force-updated) to keep it in sync with the "master" branch after each
-official release.
+Riskier changes are first cooked on the "next" branch for a period
+before being merged into "main". You can track this branch if you're
+feeling wild and experimental, but note that the "next" branch may
+periodically be rewound (force-updated) to keep it in sync with the
+"main" branch after each official release.
 
 
 WEBSITE                                         *command-t-website*
@@ -1553,6 +1572,29 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 
 HISTORY                                         *command-t-history*
+
+5.0.5 (24 July 2022) ~
+
+- Teach watchman scanner to favor `watch-project` over `watch` when
+  available (#390, patch from Todd Derr).
+
+5.0.4 (28 May 2022) ~
+
+- Support opening files which contain newlines (#365).
+- Guard against possible |E315| on accepting a selection.
+- Fix possible |E434| when trying to jump to some help targets.
+- Use |execute()| when available to avoid possible issues with
+  potentially nested calls to |:redir|.
+- Fix conflict with vim-cool plugin (#354).
+- Close match listing after buffer deletion to avoid likely errors on
+  subsequent interactions (#357, patch from Andrius Grabauskas).
+- Fix |E116| error opening filenames containing single quotes.
+- Deal with |'wildignore'| (and |g:CommandTWildIgnore|) patterns of the form
+  "*pattern" (eg. "*~", which would ignore files created with Vim's default
+  |'backupext'|) (#369, patch from Steve Herrell).
+- Turn off |'signcolumn'| in the match listing (#376).
+- Teach file scanner to skip over badly encoded strings.
+- Teach watchman scanner to tolerate broken watchman installation.
 
 5.0.3 (19 September 2018) ~
 
