@@ -1,3 +1,5 @@
 autoload              /usr/lib/vim-command-t/
 plugin                /usr/lib/vim-command-t/
 doc/*.txt             /usr/lib/vim-command-t/doc/
+ruby/command-t/bin/commandtd		/usr/lib/vim-command-t/bin/
+ruby/command-t/ext/command-t/ext.so	/usr/lib/vim-command-t/ruby/command-t/ext/command-t/
