@@ -8,11 +8,9 @@ updated. Upstream is happy for us to remove this check.
  autoload/commandt.vim | 15 ++-------------
  1 file changed, 2 insertions(+), 13 deletions(-)
 
-diff --git a/autoload/commandt.vim b/autoload/commandt.vim
-index 1c65748..5e1ca61 100644
---- a/autoload/commandt.vim
-+++ b/autoload/commandt.vim
-@@ -199,19 +199,8 @@ ruby << EOF
+--- command-t.orig/autoload/commandt.vim
++++ command-t/autoload/commandt.vim
+@@ -195,19 +195,8 @@ ruby << EOF
    # require Ruby files
    begin
      require 'command-t'

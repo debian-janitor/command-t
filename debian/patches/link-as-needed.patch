@@ -6,11 +6,9 @@ Subject: Link with --as-needed
  Rakefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Rakefile b/Rakefile
-index fbc877c..70380f2 100644
---- a/Rakefile
-+++ b/Rakefile
-@@ -84,7 +84,7 @@ task :make do
+--- command-t.orig/Rakefile
++++ command-t/Rakefile
+@@ -81,7 +81,7 @@ task :make do
      ruby 'extconf.rb'
      system 'make clean'
      bail_on_failure
