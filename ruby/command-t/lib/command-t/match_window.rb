@@ -95,6 +95,7 @@ module CommandT
         set 'foldcolumn', 0         # don't show a fold column at side
         set 'foldlevel', 99         # don't fold anything
         set 'cursorline', false     # don't highlight line cursor is on
+        set 'signcolumn', 'no'      # signcolumn never
         set 'spell', false          # spell-checking off
         set 'buflisted', false      # don't show up in the buffer list
         set 'textwidth', 0          # don't hard-wrap (break long lines)
@@ -353,8 +354,8 @@ module CommandT
       @windows.each do |w|
         # beware: window may be nil
         if window = ::VIM::Window[w.index]
-          window.height = w.height
-          window.width  = w.width
+          (window.height = w.height) rescue nil # Beware E315
+          (window.width  = w.width) rescue nil # Beware E315
           focus_window(w.index + 1)
           ::VIM::evaluate("winrestview({" +
             "'lnum': #{w.lnum}," +

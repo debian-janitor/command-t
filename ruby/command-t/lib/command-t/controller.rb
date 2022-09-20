@@ -228,6 +228,7 @@ module CommandT
         ::VIM::command "bd #{selection}"
       end
       list_matches!
+      hide
     end
     guard :remove_buffer
 
@@ -411,11 +412,10 @@ module CommandT
       false
     end
 
-    # Backslash-escape space, \, |, %, #, "
+    # Backslash-escape space, \, |, %, #, " etc.
     def sanitize_path_string(str)
-      # for details on escaping command-line mode arguments see: :h :
-      # (that is, help on ":") in the Vim documentation.
-      str.gsub(/[ \\|%#"]/, '\\\\\0')
+      quoted_name = VIM::escape_for_single_quotes(str)
+      ::VIM::evaluate("fnameescape('#{quoted_name}')")
     end
 
     def current_buffer_visible_in_other_window
