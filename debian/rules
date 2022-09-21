@@ -8,7 +8,8 @@ override_dh_auto_build:
 
 override_dh_auto_clean:
 	rake clean
-	rm -f ruby/command-t/ext/command-t/metadata.rb Gemfile.lock
+	rm -f ruby/command-t/ext/command-t/metadata.rb
+	git checkout -f Gemfile.lock || rm -f Gemfile.lock
 
 override_dh_auto_test:
 # `bundle install` creates a .bundle/config that sets BUNDLE_DISABLE_SHARED_GEMS,
